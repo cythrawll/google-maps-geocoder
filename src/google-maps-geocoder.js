@@ -2,7 +2,7 @@ const SDK_URL_BASE = '//maps.googleapis.com/maps/api/js';
 const SCRIPT_ID = 'google-maps';
 const CALLBACK_NAME = 'googleMapsInit';
 
-function isLoaded() {
+function isLoaded(document) {
   return !!document.getElementById(SCRIPT_ID);
 }
 
@@ -15,17 +15,17 @@ function insertSDK(document, apiKey) {
   firstScript.parentNode.insertBefore(scriptTag, firstScript);
 }
 
-function load(apiKey) {
+function load(apiKey, document) {
   return new Promise((resolve, reject) => {
     try {
       window[CALLBACK_NAME] = function() {
         resolve(window.google.maps);
       };
-      if (isLoaded()) {
+      if (isLoaded(document)) {
         resolve(window.google.maps);
         return;
       }
-      insertSDK(apiKey);
+      insertSDK(document, apiKey);
     } catch (error) {
       reject(error);
     }
