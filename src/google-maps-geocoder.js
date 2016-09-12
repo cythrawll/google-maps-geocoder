@@ -55,8 +55,23 @@ export default function(apiKey, document = window.document) {
           }
         });
       }));
-    }
+    },
 
+    geocode(address) {
+      return loaded.then((sdk) => new Promise((resolve, reject) => {
+        const query = {
+          address
+        };
+        const geocoder = new sdk.Geocoder;
+        geocoder.geocode(query, function(results, status) {
+          if (status === sdk.GeocoderStatus.OK && results[0]) {
+            resolve(results[0].geometry.location);
+          } else {
+            reject(new Error('Geocoder failed to find the address.'));
+          }
+        });
+      }));
+    }
   };
 
 }
