@@ -3,10 +3,14 @@ const SCRIPT_ID = 'google-maps';
 const CALLBACK_NAME = 'googleMapsInit';
 
 function isLoaded(document) {
-  return !!document.getElementById(SCRIPT_ID);
+  return document && window.google && window.google.maps;
+  //return !!document.getElementById(SCRIPT_ID);
 }
 
 function insertSDK(document, apiKey) {
+  if (document.getElementById(SCRIPT_ID)) {
+    return;
+  }
   const scriptTag = document.createElement('script');
   scriptTag.id = SCRIPT_ID;
   scriptTag.src = SDK_URL_BASE + '?key=' + apiKey + '&callback=' + CALLBACK_NAME;
