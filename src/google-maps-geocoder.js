@@ -61,11 +61,28 @@ export default function(apiKey, document = window.document) {
       }));
     },
 
-    geocode(address) {
+    geocode(address, opts) {
       return loaded.then((sdk) => new Promise((resolve, reject) => {
         const query = {
           address
         };
+        if (opts !== null && opts !== undefined) {
+          if (opts.bounds) {
+            query.bounds = opts.bounds;
+          }
+          if (opts.componentRestrictions) {
+            query.componentRestrictions = opts.componentRestrictions;
+          }
+          if (opts.region) {
+            query.region = opts.region;
+          }
+          if (opts.location) {
+            query.location = opts.location;
+          }
+          if (opts.placeId) {
+            query.placeId = opts.placeId;
+          }
+        }
         const geocoder = new sdk.Geocoder;
         geocoder.geocode(query, function(results, status) {
           if (status === sdk.GeocoderStatus.OK && results[0]) {
